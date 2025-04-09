@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Game Quiz</title>
+  <link rel="stylesheet" href="color.css">
+  <link rel="icon" href="img/color.png"/>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Color Game Quiz</h1>
+    <div id="quiz">
+      <div id="question-container">
+        <div id="question"></div>
+        <div id="answers" class="btn-container"></div>
+      </div>
+      <button id="next-btn">Next</button>
+    </div>
+  
+    <!-- Submit and Exit buttons -->
+    <div class="btn-container">
+      <button id="exit-btn">Exit Game</button>
+    </div>
+  
+    <div id="result" class="hidden">
+      <h2>Quiz Completed!</h2>
+      <p id="score"></p>
+      <button id="restart-btn">Restart</button>
+    </div>
+  </div>
+  
+  <script src="color.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Box Game - Questions</title>
+    <link rel="icon" href="img/mystery box logo.png"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+        .box {
+            width: 120px;
+            height: 120px;
+            margin: 15px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            border-radius: 10px;
+        }
+        .box:hover {
+            transform: scale(1.1);
+        }
+        .box.opened {
+            background-color: gold;
+            color: black;
+            font-size: 16px;
+            text-align: center;
+            padding: 10px;
+        }
+        .exit-button {
+            margin-top: 30px;
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            border-radius: 5px;
+        }
+        .exit-button:hover {
+            background-color: darkred;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Pick a Mystery Box to Reveal a Question!</h1>
+    <div class="container">
+        <div class="box" onclick="revealQuestion(this)">?</div>
+        <div class="box" onclick="revealQuestion(this)">?</div>
+        <div class="box" onclick="revealQuestion(this)">?</div>
+    </div>
+    <p id="result"></p>
+    <button class="exit-button" onclick="goBack()">Exit</button>
+
+    <script>
+        const questions = [
+            "What is your favorite book?", 
+            "If you could travel anywhere, where would you go?", 
+            "What is your biggest dream?", 
+            "Who is your role model?", 
+            "What skill would you love to learn?"
+        ];
+
+        function revealQuestion(box) {
+            if (!box.classList.contains("opened")) {
+                let randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+                box.textContent = randomQuestion;
+                box.classList.add("opened");
+                document.getElementById("result").textContent = "Your question: " + randomQuestion;
+            }
+        }
+
+        function goBack() {
+            window.location.href = "Snacf.html"; // Change this to your landing page URL
+        }
+    </script>
+</body>
+</html>

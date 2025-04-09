@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], input[type="file"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-btn { background-color: #28a745; color: white; }
+        .update-btn { background-color: #ffc107; color: white; }
+        .delete-btn { background-color: #dc3545; color: white; }
+        .read-btn { background-color: #007bff; color: white; }
+        .book-item {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .book-content {
+            display: none;
+            background: #fff;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .exit-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto;
+}
+
+.exit-btn:hover {
+    background-color: #5a6268;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Book Management</h2>
+        <input type="text" id="title" placeholder="Book Title">
+        <input type="text" id="author" placeholder="Teacher">
+        <input type="text" id="genre" placeholder="Genre">
+        <input type="file" id="file">
+        <button class="add-btn" onclick="addBook()">Add Book</button>
+        <button class="exit-btn" onclick="exitApp()">Exit</button>
+
+
+        <div id="bookList"></div>
+    </div>
+
+    <script>
+        let books = [];
+        let editIndex = -1;
+
+        function addBook() {
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const genre = document.getElementById('genre').value;
+            const fileInput = document.getElementById('file');
+            const file = fileInput.files[0];
+
+            if (title && author && genre && file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const fileContent = e.target.result;
+
+                    if (editIndex === -1) {
+                        books.push({ title, author, genre, fileName: file.name, fileContent, fileType: file.type });
+                    } else {
+                        books[editIndex] = { title, author, genre, fileName: file.name, fileContent, fileType: file.type };
+                        editIndex = -1;
+                        document.querySelector('.add-btn').textContent = 'Add Book';
+                    }
+                    clearFields();
+                    displayBooks();
+                };
+
+                if (file.type === 'application/pdf' || file.type.startsWith('text/')) {
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Only PDF and text files are supported.');
+                }
+            } else {
+                alert('Please fill in all fields and upload a file.');
+            }
+        }
+
+        function displayBooks() {
+            const bookList = document.getElementById('bookList');
+            bookList.innerHTML = '';
+            books.forEach((book, index) => {
+                bookList.innerHTML += `
+                    <div class="book-item">
+                        <strong>${book.title}</strong> by ${book.author} <em>(${book.genre})</em>
+                        <br>
+                        File: ${book.fileName}
+                        <br>
+                        <button class="read-btn" onclick="readBook(${index})">Read Book</button>
+                        <button class="update-btn" onclick="editBook(${index})">Update</button>
+                        <button class="delete-btn" onclick="deleteBook(${index})">Delete</button>
+                        <div id="content-${index}" class="book-content"></div>
+                    </div>
+                `;
+            });
+        }
+
+        function readBook(index) {
+            const book = books[index];
+            const contentDiv = document.getElementById(`content-${index}`);
+
+            if (book.fileType === 'application/pdf') {
+                contentDiv.innerHTML = `<embed src="${book.fileContent}" width="100%" height="300px" type="application/pdf">`;
+            } else if (book.fileType.startsWith('text/')) {
+                fetch(book.fileContent)
+                    .then(response => response.text())
+                    .then(text => {
+                        contentDiv.innerText = text;
+                    });
+            }
+            contentDiv.style.display = 'block';
+        }
+
+        function editBook(index) {
+            const book = books[index];
+            document.getElementById('title').value = book.title;
+            document.getElementById('author').value = book.author;
+            document.getElementById('genre').value = book.genre;
+            editIndex = index;
+            document.querySelector('.add-btn').textContent = 'Update Book';
+        }
+
+        function deleteBook(index) {
+            books.splice(index, 1);
+            displayBooks();
+        }
+
+        function clearFields() {
+            document.getElementById('title').value = '';
+            document.getElementById('author').value = '';
+            document.getElementById('genre').value = '';
+            document.getElementById('file').value = '';
+        }
+
+        function exitApp() {
+    const confirmExit = confirm("Are you sure you want to exit the application?");
+    if (confirmExit) {
+        window.close(); // Closes the window (only works if opened via JavaScript)
+        
+        // Alternative: Redirect to another page (e.g., home page)
+         window.location.href = "Snacf.html";  
+    }
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book App Quiz</title>
+    <link rel="icon" href="img/picture logo for quiz.png"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: auto;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .quiz-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .answers {
+            list-style: none;
+            padding: 0;
+        }
+        .answers li {
+            margin-bottom: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .exit-btn {
+            background-color: #dc3545;
+            margin-top: 20px;
+            max-width: 200px;
+        }
+        .exit-btn:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz</h1>
+        <div id="quiz"></div>
+        <div class="result" id="result" style="display: none;"></div>
+    </div>
+    
+    <button class="exit-btn" onclick="exitQuiz()">Exit</button>
+    
+    <script>
+        const questions = [
+            { question: "What is the name of the protagonist in 'To Kill a Mockingbird'?", answers: ["Tom Robinson", "Atticus Finch", "Scout Finch", "Boo Radley"], correct: 2 },
+            { question: "Who wrote '1984'?", answers: ["Aldous Huxley", "George Orwell", "Ray Bradbury", "J.K. Rowling"], correct: 1 },
+            { question: "Which book features a character named Jay Gatsby?", answers: ["The Great Gatsby", "Pride and Prejudice", "Moby Dick", "Hamlet"], correct: 0 },
+            { question: "Who is the author of 'Pride and Prejudice'?", answers: ["Jane Austen", "Charlotte Brontë", "Emily Dickinson", "Harper Lee"], correct: 0 },
+            { question: "Which novel is set in a dystopian future ruled by 'Big Brother'?", answers: ["Brave New World", "1984", "Fahrenheit 451", "The Hunger Games"], correct: 1 },
+            { question: "What is the first book in the 'Harry Potter' series?", answers: ["The Chamber of Secrets", "The Goblet of Fire", "The Sorcerer’s Stone", "The Half-Blood Prince"], correct: 2 },
+            { question: "Who wrote 'Moby Dick'?", answers: ["Mark Twain", "Ernest Hemingway", "Herman Melville", "F. Scott Fitzgerald"], correct: 2 },
+            { question: "Which book is known as the 'Odyssey' of America?", answers: ["The Grapes of Wrath", "The Catcher in the Rye", "Moby Dick", "On the Road"], correct: 0 },
+            { question: "Who is the main character in 'The Catcher in the Rye'?", answers: ["Holden Caulfield", "Jay Gatsby", "Huckleberry Finn", "Winston Smith"], correct: 0 },
+            { question: "Which book features a dystopian society where books are banned?", answers: ["1984", "Fahrenheit 451", "Brave New World", "The Handmaid’s Tale"], correct: 1 }
+        ];
+
+        const quizContainer = document.getElementById("quiz");
+        const result = document.getElementById("result");
+
+        function loadQuiz() {
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.innerHTML = `<strong>${index + 1}. ${q.question}</strong>`;
+                
+                const answersList = document.createElement("ul");
+                answersList.classList.add("answers");
+
+                q.answers.forEach((answer, i) => {
+                    const li = document.createElement("li");
+                    const button = document.createElement("button");
+                    button.textContent = answer;
+                    button.dataset.correct = i === q.correct;
+                    button.addEventListener("click", checkAnswer);
+                    li.appendChild(button);
+                    answersList.appendChild(li);
+                });
+
+                quizContainer.appendChild(questionDiv);
+                quizContainer.appendChild(answersList);
+            });
+        }
+
+        function checkAnswer(event) {
+            const isCorrect = event.target.dataset.correct === "true";
+            result.textContent = isCorrect ? "Correct! Great job!" : "Oops! That's not correct. Try again!";
+            result.style.color = isCorrect ? "green" : "red";
+            result.style.display = "block";
+        }
+
+        function exitQuiz() {
+            if (confirm("Are you sure you want to go back to the landing page?")) {
+                window.location.href = "Snacf.html"; // Change "landing-page.html" to your actual landing page URL
+            }
+        }
+
+        loadQuiz();
+    </script>
+</body>
+</html>
